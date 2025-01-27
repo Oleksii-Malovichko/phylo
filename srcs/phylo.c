@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                            :+:      :+:    :+:   */
+/*   phylo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alex <alex@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: omalovic <omalovic@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 12:18:13 by alex              #+#    #+#             */
-/*   Updated: 2025/01/21 20:38:29 by alex             ###   ########.fr       */
+/*   Updated: 2025/01/27 14:29:35 by omalovic         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "../include/philo.h"
 
 long	get_time_ms(void)
 {
@@ -87,11 +87,11 @@ int	sleeping(s_philo *philo)
 
 	if (curr_time - philo->last_meal_time >= philo->time_to_die)
 	{
-		printf("%ld Philo %d is died\n", curr_time - philo->last_meal_time, philo->id);
+		printf("%lld Philo %d is died\n", curr_time - philo->last_meal_time, philo->id);
 		return (1);
 	}
 	pthread_mutex_lock(philo->print_lock);
-	printf("%ld Philo %d is sleeping\n", curr_time - philo->last_meal_time, philo->id);
+	printf("%lld Philo %d is sleeping\n", curr_time - philo->last_meal_time, philo->id);
 	pthread_mutex_unlock(philo->print_lock);
 	usleep(philo->time_to_sleep * 1000);
 	return (0);
@@ -103,11 +103,11 @@ int	thinking(s_philo *philo)
 
 	if (curr_time - philo->last_meal_time >= philo->time_to_die)
 	{
-		printf("%ld Philo %d is died\n", curr_time - philo->last_meal_time, philo->id);
+		printf("%lld Philo %d is died\n", curr_time - philo->last_meal_time, philo->id);
 		return (1);
 	}
 	pthread_mutex_lock(philo->print_lock);
-	printf("%ld Philo %d is thinking\n", curr_time - philo->last_meal_time, philo->id);
+	printf("%lld Philo %d is thinking\n", curr_time - philo->last_meal_time, philo->id);
 	pthread_mutex_unlock(philo->print_lock);
 	usleep(philo->time_to_sleep * 1000);
 	return (0);
@@ -119,11 +119,11 @@ int	eating(s_philo *philo)
 	
 	if (curr_time - philo->last_meal_time >= philo->time_to_die)
 	{
-		printf("%ld Philo %d is died\n", curr_time - philo->last_meal_time, philo->id);
+		printf("%lld Philo %d is died\n", curr_time - philo->last_meal_time, philo->id);
 		return (1);
 	}
 	pthread_mutex_lock(philo->print_lock);
-	printf("%ld Philo %d is eating\n", curr_time - philo->last_meal_time, philo->id);
+	printf("%lld Philo %d is eating\n", curr_time - philo->last_meal_time, philo->id);
 	pthread_mutex_unlock(philo->print_lock);
 	usleep(philo->time_to_sleep * 1000);
 	philo->last_meal_time = get_time_ms();
@@ -151,7 +151,7 @@ int	main(int n, char **args)
 {
 	s_philo 	**philo;
 	int			num_of_philo;
-	pthread_t	monitor_thread;
+	// pthread_t	monitor_thread;
 	int			i;
 
 	if (n < 5 || n > 6)
@@ -186,3 +186,22 @@ int	main(int n, char **args)
 	}
 	clean_all(philo, num_of_philo);
 }
+/* 
+➜  ghambrec_pipex git:(master) ✗ ls -l   
+total 120
+-rwxr-xr-x  1 omalovic  2024_heilbronn      0 27 янв 14:20 4
+-rw-r--r--  1 omalovic  2024_heilbronn   3264 27 янв 14:19 Makefile
+drwxr-xr-x  3 omalovic  2024_heilbronn    102 27 янв 14:16 include
+drwxr-xr-x  4 omalovic  2024_heilbronn    136 27 янв 14:20 objects
+-rwxr-xr-x  1 omalovic  2024_heilbronn  56240 27 янв 14:20 pipex
+drwxr-xr-x  5 omalovic  2024_heilbronn    170 27 янв 14:18 sources
+1-D-30.42heilbronn.de: /Users/omalovic/projects/ghambrec_pipex                                                                                                          
+➜  ghambrec_pipex git:(master) ✗ ls -l > infile
+1-D-30.42heilbronn.de: /Users/omalovic/projects/ghambrec_pipex                                                                                                          
+➜  ghambrec_pipex git:(master) ✗ < infile grep "pipex"
+-rwxr-xr-x  1 omalovic  2024_heilbronn  56240 27 янв 14:20 pipex
+1-D-30.42heilbronn.de: /Users/omalovic/projects/ghambrec_pipex                                                                                                          
+➜  ghambrec_pipex git:(master) ✗ < infile grep "pipex" | xargs > outfile
+1-D-30.42heilbronn.de: /Users/omalovic/projects/ghambrec_pipex                                                                                                          
+➜  ghambrec_pipex git:(master) ✗ ./pipex infile "grep pipex" xargs outfile
+ */
